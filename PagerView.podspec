@@ -31,7 +31,7 @@ TODO: Add long description of the pod here.
   s.ios.deployment_target = '9.0'
 
   s.source_files = 'PagerView/Classes/**/*'
-  
+  s.swift_version = '5.3'
   # s.resource_bundles = {
   #   'PagerView' => ['PagerView/Assets/*.png']
   # }
