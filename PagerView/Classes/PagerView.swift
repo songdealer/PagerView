@@ -97,7 +97,7 @@ open class PagerView: UIView {
             }
             lastView = v
             
-            let tapGestureRecognizer = MPagerTapGestureRecognizer(target: self, action: #selector(tapped(_:)))
+            let tapGestureRecognizer = PagerTapGestureRecognizer(target: self, action: #selector(tapped(_:)))
             tapGestureRecognizer.index = index
             v.addGestureRecognizer(tapGestureRecognizer)
             views.append(v)
@@ -107,12 +107,12 @@ open class PagerView: UIView {
         contentView.trailingAnchor.constraint(equalTo: lastView!.trailingAnchor, constant: self.bounds.width * (1 - scale.width) / 2).isActive = true
     }
     
-    class MPagerTapGestureRecognizer: UITapGestureRecognizer {
+    class PagerTapGestureRecognizer: UITapGestureRecognizer {
         var index: Int? = nil
     }
     
     @objc
-    private func tapped(_ tapGestureRecognizer: MPagerTapGestureRecognizer) {
+    private func tapped(_ tapGestureRecognizer: PagerTapGestureRecognizer) {
         guard let v = tapGestureRecognizer.view, let index = tapGestureRecognizer.index else { return }
         
         let offset = scrollView.contentOffset.x
