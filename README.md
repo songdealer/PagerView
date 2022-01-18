@@ -22,7 +22,7 @@ pod 'PagerView'
 
 ## Author
 
-44518097, newmin123@naver.com
+songdealer, newmin123@naver.com
 
 ## License
 
