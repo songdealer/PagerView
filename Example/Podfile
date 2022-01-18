@@ -1,0 +1,6 @@
+use_frameworks!
+target 'PagerView_Tests' do
+  pod 'PagerView', :path => '../'
+  
+  
+end
