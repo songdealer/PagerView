@@ -1,0 +1,6 @@
+framework module Pods_PagerView_Tests {
+  umbrella header "Pods-PagerView_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}
