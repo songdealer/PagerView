@@ -8,9 +8,9 @@
 import UIKit
 
 @objc public protocol PagerViewDelegate {
-    func PagerView(_ PagerView: PagerView) -> Int
-    func PagerView(_ PagerView: PagerView, viewForRowAt index: Int) -> UIView
-    @objc optional func PagerView(_ clickedView: UIView, index: Int)
+    func setNumberOfRows(_ pagerView: PagerView) -> Int
+    func pagerView(_ pagerView: PagerView, viewForRowAt index: Int) -> UIView
+    @objc optional func pagerView(_ clickedView: UIView, index: Int)
 }
 
 open class PagerView: UIView {
@@ -76,10 +76,10 @@ open class PagerView: UIView {
         
         var lastView: UIView? = nil
         
-        guard let count = delegate?.PagerView(self) else { return }
+        guard let count = delegate?.setNumberOfRows(self) else { return }
         
         for index in 0...count - 1 {
-            guard let v = delegate?.PagerView(self, viewForRowAt: index) else { return }
+            guard let v = delegate?.pagerView(self, viewForRowAt: index) else { return }
             v.layer.cornerRadius = 12
             
             contentView.addSubview(v)
@@ -120,7 +120,7 @@ open class PagerView: UIView {
         let offsetIndex = Int(round(ratio))
         
         if index == offsetIndex {
-            delegate?.PagerView?(v, index: index)
+            delegate?.pagerView?(v, index: index)
         }
         
         else {
