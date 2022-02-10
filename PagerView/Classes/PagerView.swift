@@ -80,8 +80,6 @@ open class PagerView: UIView {
         
         yConstraints.removeAll()
         
-        var lastView: UIView? = nil
-        
         guard let count = delegate?.setNumberOfRows(self) else { return }
         
         for index in 0...count - 1 {
@@ -108,7 +106,6 @@ open class PagerView: UIView {
             if index == 0 {
                 y.constant = yPosition * standardRatio
             }
-            lastView = v
             
             let tapGestureRecognizer = PagerTapGestureRecognizer(target: self, action: #selector(tapped(_:)))
             tapGestureRecognizer.index = index
@@ -117,7 +114,7 @@ open class PagerView: UIView {
         }
         
         contentView.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
-        contentView.trailingAnchor.constraint(equalTo: lastView!.trailingAnchor, constant: self.bounds.width * (1 - scale.width) / 2).isActive = true
+        contentView.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: (bounds.width + bounds.width * scale.width) / 2 + CGFloat(count) * bounds.width * scale.width + spacing * standardRatio).isActive = true
     }
     
     class PagerTapGestureRecognizer: UITapGestureRecognizer {
@@ -156,28 +153,25 @@ extension PagerView: UIScrollViewDelegate {
         let index = Int(floor(ratio))
         let value = ratio-CGFloat(index)
         
-        widthConstraints[index].constant = -scrollView.bounds.width * scale.width * (1 - sideScale.width) * value
-        heightConstraints[index].constant = -scrollView.bounds.height * scale.height * (1 - sideScale.height) * value
-        
-        widthConstraints[index + 1].constant = -scrollView.bounds.width * scale.width * (1 - sideScale.width) * (1 - value)
-        heightConstraints[index + 1].constant = -scrollView.bounds.height * scale.height * (1 - sideScale.height) * (1 - value)
-        
-        widthConstraints[index + 2].constant = -scrollView.bounds.width * scale.width * (1 - sideScale.width)
-        heightConstraints[index + 2].constant = -scrollView.bounds.height * scale.height * (1 - sideScale.height)
-        
         if index - 1 <= yConstraints.count - 1 && index - 1 >= 0 {
             yConstraints[index - 1].constant = 0
         }
         
         if index <= yConstraints.count - 1 && index >= 0 {
             yConstraints[index].constant = yPosition * standardRatio * (1 - value)
+            widthConstraints[index].constant = -scrollView.bounds.width * scale.width * (1 - sideScale.width) * value
+            heightConstraints[index].constant = -scrollView.bounds.height * scale.height * (1 - sideScale.height) * value
         }
         if index + 1 <= yConstraints.count - 1  && index + 1 >= 0 {
-            yConstraints[index+1].constant = yPosition * standardRatio * value
+            yConstraints[index + 1].constant = yPosition * standardRatio * value
+            widthConstraints[index + 1].constant = -scrollView.bounds.width * scale.width * (1 - sideScale.width) * (1 - value)
+            heightConstraints[index + 1].constant = -scrollView.bounds.height * scale.height * (1 - sideScale.height) * (1 - value)
         }
         
         if index + 2 <= yConstraints.count - 1 && index + 2 >= 0 {
             yConstraints[index + 2].constant = 0
+            widthConstraints[index + 2].constant = -scrollView.bounds.width * scale.width * (1 - sideScale.width)
+            heightConstraints[index + 2].constant = -scrollView.bounds.height * scale.height * (1 - sideScale.height)
         }
     }
     
