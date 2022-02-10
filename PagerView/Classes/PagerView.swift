@@ -91,13 +91,20 @@ open class PagerView: UIView {
             contentView.addSubview(v)
             v.translatesAutoresizingMaskIntoConstraints = false
             
-            v.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: scale.width).isActive = true
-            v.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: scale.height).isActive = true
+            let width = v.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: scale.width)
+            let height = v.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: scale.height)
+            
+            width.isActive = true
+            height.isActive = true
+            widthConstraints.append(width)
+            heightConstraints.append(height)
+            
             v.centerXAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: bounds.width / 2 + CGFloat(index) * (bounds.width * scale.width + spacing * standardRatio)).isActive = true
             
             let y = v.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor)
             y.isActive = true
             yConstraints.append(y)
+            
             if index == 0 {
                 y.constant = yPosition * standardRatio
             }
