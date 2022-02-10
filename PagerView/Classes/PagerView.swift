@@ -16,6 +16,9 @@ import UIKit
 open class PagerView: UIView {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
+    
+    private var widthConstraints = [NSLayoutConstraint]()
+    private var heightConstraints = [NSLayoutConstraint]()
     private var yConstraints = [NSLayoutConstraint]()
     private var views = [UIView]()
     
@@ -24,6 +27,7 @@ open class PagerView: UIView {
     public var spacing: CGFloat = 40
     public var yPosition: CGFloat = -20
     public var scale: CGSize = CGSize(width: 0.6, height: 0.8)
+    public var sideScale: CGSize = CGSize(width: 1.0, height: 1.0)
     
     public var delegate: PagerViewDelegate? = nil
     
@@ -67,6 +71,8 @@ open class PagerView: UIView {
         scrollView.bouncesZoom = true
         
         scrollView.delegate = self
+        scrollView.clipsToBounds = false
+        contentView.clipsToBounds = false
     }
     
     public override func draw(_ rect: CGRect) {
@@ -142,6 +148,15 @@ extension PagerView: UIScrollViewDelegate {
         let ratio = offset / (bounds.width * scale.width + spacing * standardRatio)
         let index = Int(floor(ratio))
         let value = ratio-CGFloat(index)
+        
+        widthConstraints[index].constant = -scrollView.bounds.width * scale.width * (1 - sideScale.width) * value
+        heightConstraints[index].constant = -scrollView.bounds.height * scale.height * (1 - sideScale.height) * value
+        
+        widthConstraints[index + 1].constant = -scrollView.bounds.width * scale.width * (1 - sideScale.width) * (1 - value)
+        heightConstraints[index + 1].constant = -scrollView.bounds.height * scale.height * (1 - sideScale.height) * (1 - value)
+        
+        widthConstraints[index + 2].constant = -scrollView.bounds.width * scale.width * (1 - sideScale.width)
+        heightConstraints[index + 2].constant = -scrollView.bounds.height * scale.height * (1 - sideScale.height)
         
         if index - 1 <= yConstraints.count - 1 && index - 1 >= 0 {
             yConstraints[index - 1].constant = 0
