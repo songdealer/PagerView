@@ -114,7 +114,7 @@ open class PagerView: UIView {
         }
         
         contentView.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
-        contentView.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: (bounds.width + bounds.width * scale.width) / 2 + CGFloat(count) * bounds.width * scale.width + spacing * standardRatio).isActive = true
+        contentView.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: bounds.width + CGFloat(count) * bounds.width * scale.width + spacing * standardRatio).isActive = true
         
         scrollViewDidScroll(scrollView)
     }
