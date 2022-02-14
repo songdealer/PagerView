@@ -77,10 +77,13 @@ open class PagerView: UIView {
     
     public override func draw(_ rect: CGRect) {
         super.draw(rect)
-        
+        loadData()
+    }
+    
+    public func loadData() {
         yConstraints.removeAll()
         
-        guard let count = delegate?.setNumberOfRows(self) else { return }
+        guard let count = delegate?.setNumberOfRows(self), count > 0 else { return }
         
         for index in 0...count - 1 {
             guard let v = delegate?.pagerView(self, viewForRowAt: index) else { return }
@@ -114,7 +117,7 @@ open class PagerView: UIView {
         }
         
         contentView.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
-        contentView.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: bounds.width + CGFloat(count) * bounds.width * scale.width + spacing * standardRatio).isActive = true
+        contentView.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: bounds.width + CGFloat(count - 1) * (bounds.width * scale.width + spacing * standardRatio)).isActive = true
         
         scrollViewDidScroll(scrollView)
     }
