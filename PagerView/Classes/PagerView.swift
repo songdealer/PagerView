@@ -11,6 +11,9 @@ import UIKit
     func setNumberOfRows(_ pagerView: PagerView) -> Int
     func pagerView(_ pagerView: PagerView, viewForRowAt index: Int) -> UIView
     @objc optional func pagerView(_ clickedView: UIView, index: Int)
+    @objc optional func pagerViewDidScroll(_ offset: CGPoint)
+    @objc optional func pagerViewDidScrollBy(_ ratio: CGFloat)
+    @objc optional func pagerViewDidEndDragging(_ index: Int)
 }
 
 open class PagerView: UIView {
@@ -178,10 +181,19 @@ extension PagerView: UIScrollViewDelegate {
             widthConstraints[index + 2].constant = -scrollView.bounds.width * scale.width * (1 - sideScale.width)
             heightConstraints[index + 2].constant = -scrollView.bounds.height * scale.height * (1 - sideScale.height)
         }
+        
+        delegate?.pagerViewDidScroll?(scrollView.contentOffset)
+        delegate?.pagerViewDidScrollBy?(ratio)
     }
     
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         isUserInteractionEnabled = true
+        
+        let offset = scrollView.contentOffset.x
+        let ratio = offset / (bounds.width * scale.width + spacing * standardRatio)
+        let index = Int(floor(ratio))
+        
+        delegate?.pagerViewDidEndDragging?(index)
     }
     
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
