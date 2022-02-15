@@ -144,7 +144,7 @@ open class PagerView: UIView {
         else {
             isUserInteractionEnabled = false
             let x = CGFloat(index) * (self.bounds.width * self.scale.width + self.spacing * self.standardRatio)
-            self.scrollView.scrollRectToVisible(CGRect(x: x, y: 0, width: scrollView.bounds.width, height: scrollView.bounds.height), animated: true)
+            self.scrollView.setContentOffset(CGPoint(x: x, y: 0), animated: true)
         }
         
         //delegate?.PagerView?(v, index: index)
@@ -155,9 +155,11 @@ open class PagerView: UIView {
 
 extension PagerView: UIScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offset = scrollView.contentOffset.x
+        let convertedOffset = scrollView.contentOffset.x
+        let originalOffset = bounds.width * scale.width + spacing * standardRatio
+        let calculatedOffset = round(originalOffset * 2) / 2
         
-        let ratio = offset / (bounds.width * scale.width + spacing * standardRatio)
+        let ratio = convertedOffset / calculatedOffset
         let index = Int(floor(ratio))
         let value = ratio-CGFloat(index)
         
@@ -189,8 +191,11 @@ extension PagerView: UIScrollViewDelegate {
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         isUserInteractionEnabled = true
         
-        let offset = scrollView.contentOffset.x
-        let ratio = offset / (bounds.width * scale.width + spacing * standardRatio)
+        let convertedOffset = scrollView.contentOffset.x
+        let originalOffset = bounds.width * scale.width + spacing * standardRatio
+        let calculatedOffset = round(originalOffset * 2) / 2
+        
+        let ratio = convertedOffset / calculatedOffset
         let index = Int(floor(ratio))
         
         delegate?.pagerViewDidEndDragging?(index)
@@ -201,7 +206,10 @@ extension PagerView: UIScrollViewDelegate {
         let xPosition = targetContentOffset.pointee.x
         let offset = (xPosition - bounds.width * scale.width / 2 - spacing * standardRatio / 2) / (bounds.width * scale.width + spacing * standardRatio)
         let index = ceil(offset)
+        let x = index * (bounds.width * scale.width + spacing * standardRatio)
         
-        targetContentOffset.pointee.x = index * (bounds.width * scale.width + spacing * standardRatio)
+        targetContentOffset.pointee.x = x
+        
+        scrollView.setContentOffset(CGPoint(x: x, y: 0), animated: true)
     }
 }
