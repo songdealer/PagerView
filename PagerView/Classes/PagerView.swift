@@ -84,7 +84,13 @@ open class PagerView: UIView {
     }
     
     public func loadData() {
+        widthConstraints.removeAll()
+        heightConstraints.removeAll()
         yConstraints.removeAll()
+        
+        for v in contentView.subviews {
+            v.removeFromSuperview()
+        }
         
         guard let count = delegate?.setNumberOfRows(self), count > 0 else { return }
         
