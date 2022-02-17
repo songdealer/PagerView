@@ -157,7 +157,7 @@ extension PagerView: UIScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let convertedOffset = scrollView.contentOffset.x
         let originalOffset = bounds.width * scale.width + spacing * standardRatio
-        let calculatedOffset = round(originalOffset * 2) / 2
+        let calculatedOffset = round(originalOffset * 4) / 4
         
         let ratio = convertedOffset / calculatedOffset
         let index = Int(floor(ratio))
@@ -193,7 +193,7 @@ extension PagerView: UIScrollViewDelegate {
         
         let convertedOffset = scrollView.contentOffset.x
         let originalOffset = bounds.width * scale.width + spacing * standardRatio
-        let calculatedOffset = round(originalOffset * 2) / 2
+        let calculatedOffset = round(originalOffset * 4) / 4
         
         let ratio = convertedOffset / calculatedOffset
         let index = Int(floor(ratio))
