@@ -208,7 +208,7 @@ extension PagerView: UIScrollViewDelegate {
         let maximum = (convertedOffset * 2 + 0.4) / originalOffset
         
         //let index = round(minimum)
-        let index = floor(maximum)
+        let index = Int(floor(maximum))
         
         delegate?.pagerViewDidEndDragging?(index)
     }
