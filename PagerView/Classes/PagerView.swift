@@ -204,11 +204,13 @@ extension PagerView: UIScrollViewDelegate {
         //let ratio = convertedOffset / calculatedOffset
         //let index = Int(floor(ratio))
         
-        let minimum = (convertedOffset * 2 - 0.5) / originalOffset
-        let maximum = (convertedOffset * 2 + 0.4) / originalOffset
+        // convertedOffset * 2 - 0.5 <= originalOffset * index * 2 < convertedOffset * 2 + 0.4
         
-        //let index = round(minimum)
-        let index = Int(floor(maximum))
+        let minimum = (convertedOffset * 2 - 0.5) / originalOffset / 2
+        let maximum = (convertedOffset * 2 + 0.4) / originalOffset / 2
+        
+        let index = Int(round(minimum))
+        //let index = Int(floor(maximum))
         
         delegate?.pagerViewDidEndDragging?(index)
     }
