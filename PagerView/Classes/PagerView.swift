@@ -224,7 +224,10 @@ extension PagerView: UIScrollViewDelegate {
         
         targetContentOffset.pointee.x = x
         
-        scrollView.setContentOffset(CGPoint(x: x, y: 0), animated: true)
+        let integerIndex = Int(index)
+        delegate?.pagerViewDidEndDragging?(integerIndex)
+        
+        //scrollView.setContentOffset(CGPoint(x: x, y: 0), animated: true)
     }
     
     public func moveToIndex(_ index: CGFloat) {
